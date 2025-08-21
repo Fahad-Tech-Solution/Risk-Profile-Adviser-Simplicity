@@ -81,6 +81,7 @@ const LandingPage = (props) => {
           text="Start"
           type="primary" // AntD style
           htmlType="button" // HTML form submission behavior
+          size="large"
           style={{ width: "35%" }}
           onClick={goToNextPage} // Formik's handleSubmit
         />

@@ -5,30 +5,41 @@ import parse from "html-react-parser";
 
 import ClientPic from "../../assets/SVG/single-2.svg";
 import PartnerPic from "../../assets/SVG/couple-2.svg";
-
+import TopStepsBar from "../TopStepsBar";
+import CButton from "../../assets/Custom/CButton";
+import { Grid } from "antd";
 const RiskQuestions = (props) => {
   const { setFieldValue, values, handleChange } = props;
-  const { question, key, imgUrl } = props;
+  const { question, inputName, imgUrl } = props;
+  const { goToNextPage, goToBackPage } = props;
   const { choices = [] } = props;
 
-  const handleRadioChange = (type, index) => {
+  const { md, sm, xs } = Grid.useBreakpoint();
+  const isMobile = md;
 
-    const isSimpleValue = typeof values[`${type}.${key}`] === "number";
+  const handleRadioChange = (type, index) => {
+    const isSimpleValue = typeof values[`${type}.${inputName}`] === "number";
 
     // Update the state accordingly
     if (isSimpleValue) {
-      setFieldValue(`${type}.${key}`, index);
+      setFieldValue(`${type}.${inputName}`, index);
     } else {
-      setFieldValue(`${type}.${key}`, index);
+      setFieldValue(`${type}.${inputName}`, index);
     }
   };
 
-
-    return (
-      <div>
-        <div className="d-flex justify-content-start align-items-center gap-4">
-          <div style={{ width: "7%" }}>
-            <Image src={imgUrl} alt={key} fluid />
+  return (
+    <>
+      <TopStepsBar FormickOBj={props} />
+      <div className="container mt-2 mb-5">
+        <div className="d-flex flex-md-row flex-column justify-content-start align-items-center gap-4">
+          <div
+            onClick={() => {
+              console.log(props);
+            }}
+            style={{ width: !isMobile ? "25%" : "7%" }}
+          >
+            <Image src={imgUrl} alt={inputName} fluid />
           </div>
           <div className="" style={{ width: "90%" }}>
             <h5 className="my-3">
@@ -43,7 +54,9 @@ const RiskQuestions = (props) => {
           </h5>
           <div className="RiskCard">
             <h4 className="mainHeading d-flex justify-content-start align-items-center  gap-2 ">
-              <div style={{ width: "2%", marginTop: "-10px" }}>
+              <div
+                style={{ width: !isMobile ? "7%" : "2%", marginTop: "-10px" }}
+              >
                 <Image src={ClientPic} alt="Client" fluid />
               </div>
 
@@ -56,9 +69,9 @@ const RiskQuestions = (props) => {
                     className="mx-2"
                     type="radio"
                     id={`client-${index}`}
-                    name={`client.${key}`}
+                    name={`client.${inputName}`}
                     value={index}
-                    checked={values?.client?.[key] === index}
+                    checked={values?.client?.[inputName] === index}
                     onChange={() => handleRadioChange("client", index)}
                   />
                   {elem}
@@ -70,9 +83,9 @@ const RiskQuestions = (props) => {
         </div>
 
         {values.joinedProfile === "No" && (
-          <div className="RiskCard">
+          <div className="RiskCard Risk-fade-in-fwd">
             <h4 className="mainHeading d-flex justify-content-start align-items-center  gap-2 ">
-              <div style={{ width: "2%" }}>
+              <div style={{ width: !isMobile ? "7%" : "2%" }}>
                 <Image src={PartnerPic} alt="partner" fluid />
               </div>
               <b>Partner</b>
@@ -84,9 +97,9 @@ const RiskQuestions = (props) => {
                     className="mx-2"
                     type="radio"
                     id={`partner-${index}`}
-                    name={`partner.${key}`}
+                    name={`partner.${inputName}`}
                     value={index}
-                    checked={values?.partner?.[key] === index}
+                    checked={values?.partner?.[inputName] === index}
                     onChange={() => handleRadioChange("partner", index)}
                   />
                   {elem}
@@ -96,8 +109,37 @@ const RiskQuestions = (props) => {
             ))}
           </div>
         )}
+
+        <div className="d-flex flex-md-row flex-column justify-content-between align-items-center mt-4">
+          <CButton
+            text="Back"
+            size="large"
+            htmlType="button" // HTML form submission behavior
+            onClick={goToBackPage} // Formik's handleSubmit
+            className=" mt-3 customBtn"
+          />
+          {props.route === "/Q8" ? (
+            <CButton
+              text="Submit"
+              size="large"
+              type="primary" // AntD style
+              htmlType="submit" // HTML form submission behavior
+              className="p-3 mt-3  customBtn"
+            />
+          ) : (
+            <CButton
+              text="Next"
+              size="large"
+              type="primary" // AntD style
+              htmlType="button" // HTML form submission behavior
+              className="p-3 mt-3  customBtn"
+              onClick={goToNextPage} // Formik's handleSubmit
+            />
+          )}
+        </div>
       </div>
-    );
+    </>
+  );
 };
 
 export default RiskQuestions;

@@ -42,7 +42,6 @@ import {
 } from "react-icons/ri";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import Content from "../assets/Content";
 import { IoBriefcase, IoBriefcaseOutline } from "react-icons/io5";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import { BsClockHistory } from "react-icons/bs";
@@ -57,6 +56,8 @@ import {
 } from "react-icons/gi";
 import { FaHeartbeat, FaProcedures } from "react-icons/fa";
 import ProgressBar from "../assets/Custom/ProgressBar/ProgressBar";
+import { Grid } from "antd";
+import CompRoutes from "../routes";
 
 const TopStepsBar = (props) => {
   let {
@@ -72,214 +73,20 @@ const TopStepsBar = (props) => {
 
   const [items, setItems] = useState([]);
   const [currentStepComplete, setCurrentStepComplete] = useState(5);
-  const { Pages } = Content;
+  const { Pages } = CompRoutes;
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isMobile = window.innerWidth <= 768;
+  const { md } = Grid.useBreakpoint();
+  const isMobile = md;
 
   useEffect(() => {
-    const currentPath = location.pathname.split("/")[1] || "";
-    const cLocation = location.pathname.split("/")[2] || "";
-    // console.log(location.pathname, currentPath);
+    const currentPath = location.pathname;
 
-    let stepComplete = 0;
-    let mixCondition = false;
-    let mixConditionForLast4 = false;
-    let Health_MedicalHistoryCase = {
-      status: false,
-      set: "set1",
-      trueArray: [],
-    };
-
-    switch (currentPath) {
-      case "PersonalDetails":
-        mixCondition = true;
-        break;
-      case "OccupationalFinancialInformation":
-        mixCondition = true;
-        break;
-      default:
-        break;
-    }
-
-    const conditionCheck = true;
-
-    switch (currentPath) {
-      case "PersonalDetails":
-        stepComplete = 10;
-        setCurrentStepComplete(5);
-        break;
-      case "OccupationalFinancialInformation":
-        switch (cLocation) {
-          //   case "Q2":
-          //     stepComplete = 30;
-          //     setCurrentStepComplete(12);
-          //     break;
-          //   case "Q3":
-          //     stepComplete = 40;
-          //     setCurrentStepComplete(16);
-          //     break;
-          //   case "Q4":
-          //     stepComplete = 50;
-          //     setCurrentStepComplete(20);
-          //     break;
-          //   case "Q5":
-          //     stepComplete = 60;
-          //     setCurrentStepComplete(24);
-          //     break;
-          //   case "Q6":
-          //     stepComplete = 70;
-          //     setCurrentStepComplete(28);
-          //     break;
-
-          default:
-            stepComplete = 20;
-            setCurrentStepComplete(10);
-            break;
-        }
-        break;
-      case "Health_MedicalHistory":
-        Health_MedicalHistoryCase.status = true;
-        mixConditionForLast4 = true;
-        switch (cLocation) {
-          case "Q1":
-            stepComplete = 20;
-            setCurrentStepComplete(20);
-            break;
-          case "Q2":
-            stepComplete = 30;
-            setCurrentStepComplete(25);
-            break;
-          case "Q3":
-            stepComplete = 40;
-            setCurrentStepComplete(30);
-            break;
-          case "Q4":
-            stepComplete = 50;
-            setCurrentStepComplete(35);
-            break;
-          case "Q5":
-            stepComplete = 60;
-            setCurrentStepComplete(40);
-            break;
-          case "Q6":
-            stepComplete = 70;
-            setCurrentStepComplete(45);
-            break;
-          case "Q7":
-            stepComplete = 80;
-            setCurrentStepComplete(50);
-            break;
-          case "Q8":
-            stepComplete = 10;
-            Health_MedicalHistoryCase.set = "set2";
-            setCurrentStepComplete(55);
-            break;
-          case "Q9":
-            setCurrentStepComplete(60);
-            stepComplete = 20;
-            Health_MedicalHistoryCase.set = "set2";
-            break;
-          case "Q10":
-            stepComplete = 30;
-            setCurrentStepComplete(65);
-            Health_MedicalHistoryCase.set = "set2";
-            break;
-          case "Q11":
-            stepComplete = 40;
-            setCurrentStepComplete(70);
-            Health_MedicalHistoryCase.set = "set2";
-            break;
-          case "Q12":
-            stepComplete = 50;
-            setCurrentStepComplete(75);
-            Health_MedicalHistoryCase.set = "set2";
-            break;
-          //   case "Q13":
-          //     stepComplete = 60;
-          //     Health_MedicalHistoryCase.set = "set2";
-          //     setCurrentStepComplete(80);
-          //     break;
-          default:
-            stepComplete = 10;
-            setCurrentStepComplete(15);
-            break;
-        }
-        break;
-      case "LifestyleInformation":
-        mixConditionForLast4 = true;
-        Health_MedicalHistoryCase.status = true;
-        // stepComplete = 70;
-        switch (cLocation) {
-          case "Q2":
-            stepComplete = 70;
-            setCurrentStepComplete(90);
-            break;
-          case "Q1":
-            setCurrentStepComplete(85);
-            break;
-          default:
-            stepComplete = 80;
-            setCurrentStepComplete(80);
-            break;
-        }
-
-        Health_MedicalHistoryCase.set = "set2";
-        break;
-      case "FamilyMedicalHistory":
-        mixConditionForLast4 = true;
-        Health_MedicalHistoryCase.status = true;
-        stepComplete = 90;
-        Health_MedicalHistoryCase.set = "set2";
-        setCurrentStepComplete(95);
-        break;
-      case "Declaration":
-        mixConditionForLast4 = true;
-        Health_MedicalHistoryCase.status = true;
-        stepComplete = 100;
-        setCurrentStepComplete(100);
-        Health_MedicalHistoryCase.set = "set2";
-        break;
-      default:
-        break;
-    }
-
-    // Flatten all InnerPages from Pages where the condition is true
-    const main = Pages.filter((page) => page.condition(conditionCheck));
-
-    let SubPages = main
-      // .filter((Pelem) => Pelem.route === `/Health_MedicalHistory` || Pelem.route === `/LifestyleInformation` || Pelem.route === `/Declaration` || Pelem.route === `/FamilyMedicalHistory`)
-      .flatMap((Pelem) =>
-        Pelem.InnerPages.map((innerPage) => ({
-          ...innerPage,
-          route: `${Pelem.route}${innerPage.route}`, // Concatenate parent route with inner page route
-        }))
-      );
-
-    let conditionCheck2 = values;
-
-    let innerPages = SubPages.filter((page) => page.condition(conditionCheck2));
-
-    const currentIndex = innerPages.findIndex(
-      (page) => page.route === `/${currentPath}/${cLocation}`
+    const currentIndex = Pages.findIndex(
+      (page) => page.route === `${currentPath}`
     );
-    let chunkIndex;
-
-    if (isMobile) {
-      // Calculate the chunk (group of 5 pages) based on the current index
-      chunkIndex = Math.floor(currentIndex / 3);
-
-      // Slice the 6 pages for the current chunk
-      innerPages = innerPages.slice(chunkIndex * 3, chunkIndex * 3 + 3);
-    } else {
-      // Calculate the chunk (group of 5 pages) based on the current index
-      chunkIndex = Math.floor(currentIndex / 6);
-
-      // Slice the 6 pages for the current chunk
-      innerPages = innerPages.slice(chunkIndex * 6, chunkIndex * 6 + 6);
-    }
 
     const iconMap = {
       FaBriefcase,
@@ -332,27 +139,15 @@ const TopStepsBar = (props) => {
       FaClipboardList,
     };
 
-    let chunkStartIndex;
-    let chunkEndIndex;
-
-    // console.log(innerPages)
-    if (isMobile) {
-      chunkStartIndex = chunkIndex * 3;
-      chunkEndIndex = chunkStartIndex + 3 - 1; // End index of the current chunk
-    } else {
-      chunkStartIndex = chunkIndex * 6;
-      chunkEndIndex = chunkStartIndex + 6 - 1; // End index of the current chunk
-    }
-
-    const updatedItems = innerPages.map((item, index) => {
+    let updatedItems = Pages.map((item, index) => {
       const IconComponent = iconMap[item.icon] || FaUser; // Default to FaUser if not found
 
-      const fullRoute = `/${currentPath}/${cLocation}`;
+      const fullRoute = `${currentPath}`;
       const isCurrentStep = fullRoute === item.route;
 
       let status;
 
-      const globalIndex = chunkStartIndex + index; // Map the local index to the global index
+      const globalIndex = index; // Map the local index to the global index
 
       if (globalIndex < currentIndex) {
         // Previous pages have been completed
@@ -370,9 +165,11 @@ const TopStepsBar = (props) => {
         icon: (
           <span
             className={`rounded-circle text-light ${
-              status == "finish" 
+              status == "finish"
                 ? "bgColorIncomeGreen"
-                : status == "process"?"bgColorIncomeBlack": "bgColorIncome2"
+                : status == "process"
+                ? "bgColorIncomeBlack"
+                : "bgColorIncome2"
             }`}
             role="button"
             style={{
@@ -435,6 +232,17 @@ const TopStepsBar = (props) => {
       };
     });
 
+    // ✅ Only show 3 steps at a time on mobile
+    if (!isMobile) {
+      const groupSize = 3; // how many steps per window
+      const groupIndex = Math.floor(currentIndex / groupSize); // which group user is in
+
+      const start = groupIndex * groupSize;
+      const end = Math.min(start + groupSize, updatedItems.length);
+
+      updatedItems = updatedItems.slice(start, end);
+    }
+
     setItems(updatedItems);
   }, [location, Pages, values, isMobile]);
 
@@ -444,8 +252,8 @@ const TopStepsBar = (props) => {
 
   return (
     <>
-      <div className="pt-4 px-3 d-flex justify-content-center align-items-center overflow-auto ">
-        <div className="w-75">
+      <div className="pt-4 px-2 d-flex justify-content-center align-items-center overflow-auto ">
+        <div style={{ width: !isMobile ? "100%" : "85%" }}>
           <ConfigProvider
             theme={{
               components: {
