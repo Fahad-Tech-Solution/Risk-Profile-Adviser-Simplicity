@@ -8,7 +8,7 @@ const ThankYou = () => {
     <div className="text-center py-5 container">
       <Image src={logo} alt="Logo" width={200} height={200} />
       <p>
-        Thank you for completing the Adviser Assess. Your information has been
+        Thank you for completing the Risk Profile. Your information has been
         successfully submitted.
       </p>
       <p>

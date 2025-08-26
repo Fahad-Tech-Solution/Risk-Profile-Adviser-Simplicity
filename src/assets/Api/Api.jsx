@@ -85,16 +85,9 @@ const getYear = (date) => {
 const openNotification = (type, placement, message, description) => {
   notification[type]({
     message: <span style={{ fontWeight: "600" }}>{message}</span>,
-    description: description,
-    placement,
-    duration: 3,
-    // duration: 0,
-    showProgress: true,
-    style: {
-      padding: "10px",
-      lineHeight: "1.5",
-      alignItems: "center",
-    },
+    description,
+    placement: placement || "topRight", // ✅ default safe placement
+    duration: 3, // stays until user closes
   });
 };
 
@@ -863,5 +856,5 @@ export {
   validateName,
   touchFields,
   handleTouchFields,
-  getYear
+  getYear,
 };

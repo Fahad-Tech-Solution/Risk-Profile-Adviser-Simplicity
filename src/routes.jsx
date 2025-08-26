@@ -22,7 +22,7 @@ const CompRoutes = {
     {
       Title: "Desired Liquidity",
       route: "/Q1",
-      inputName: "Q1",
+      inputName: "question1",
       element: <RiskQuestions />,
       imgUrl: safeBoxQ1,
       question:
@@ -38,7 +38,7 @@ const CompRoutes = {
     {
       Title: "Rate of return",
       route: "/Q2",
-      inputName: "Q2",
+      inputName: "question2",
       element: <RiskQuestions />,
       imgUrl: CoinQ2,
       question:
@@ -49,7 +49,7 @@ const CompRoutes = {
     {
       Title: "Capital Risk",
       route: "/Q3",
-      inputName: "Q3",
+      inputName: "question3",
       element: <RiskQuestions />,
       imgUrl: lossRraphQ3,
       question:
@@ -65,7 +65,7 @@ const CompRoutes = {
     {
       Title: "Inflation",
       route: "/Q4",
-      inputName: "Q4",
+      inputName: "question4",
       element: <RiskQuestions />,
       imgUrl: GroceryQ4,
       question:
@@ -82,7 +82,7 @@ const CompRoutes = {
     {
       Title: "Legislative Risk",
       route: "/Q5",
-      inputName: "Q5",
+      inputName: "question5",
       element: <RiskQuestions />,
       imgUrl: contractQ5,
       question:
@@ -98,7 +98,7 @@ const CompRoutes = {
     {
       Title: "Investment knowledge",
       route: "/Q6",
-      inputName: "Q6",
+      inputName: "question6",
       element: <RiskQuestions />,
       imgUrl: InnovationQ6,
       question:
@@ -114,7 +114,7 @@ const CompRoutes = {
     {
       Title: "Volatility",
       route: "/Q7",
-      inputName: "Q7",
+      inputName: "question7",
       element: <RiskQuestions />,
       imgUrl: barChartQ7,
       question:
@@ -130,7 +130,7 @@ const CompRoutes = {
     {
       Title: "Asset allocation",
       route: "/Q8",
-      inputName: "Q8",
+      inputName: "question8",
       element: <RiskQuestions />,
       imgUrl: chartPieQ8,
       question:

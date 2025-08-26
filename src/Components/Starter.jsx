@@ -4,10 +4,11 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import "jspdf-autotable";
 
-import { Spin } from "antd";
+import { notification, Spin } from "antd";
 import LandingPage from "./LandingPage/LandingPage";
 import CompRoutes from "../routes";
-import { openNotification } from "../assets/Api/Api";
+import { openNotification, PostAxios } from "../assets/Api/Api";
+import ThankYou from "./ThankYou";
 
 const Starter = () => {
   const [loadingState, setLoadingState] = useState(true);
@@ -32,45 +33,69 @@ const Starter = () => {
   const initialValues = {
     // Define your initial form values here
     client: {
-      Q1: 1,
-      Q2: 1,
-      Q3: 1,
-      Q4: 1,
-      Q5: 1,
-      Q6: 1,
-      Q7: 1,
-      Q8: 1,
+      question1: 1,
+      question2: 1,
+      question3: 1,
+      question4: 1,
+      question5: 1,
+      question6: 1,
+      question7: 1,
+      question8: 1,
     },
     partner: {
-      Q1: 1,
-      Q2: 1,
-      Q3: 1,
-      Q4: 1,
-      Q5: 1,
-      Q6: 1,
-      Q7: 1,
-      Q8: 1,
+      question1: 1,
+      question2: 1,
+      question3: 1,
+      question4: 1,
+      question5: 1,
+      question6: 1,
+      question7: 1,
+      question8: 1,
     },
     joinedProfile: "No",
   };
 
   // let validationSchema = Yup.object().shape({});
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     console.log("Form submitted with values:", values);
-
+    setLoadingState(true);
     try {
       // Handle form submission logic here
-      // For example, you might send the values to an API or process them in some way
-      openNotification(
-        "success",
-        "Form submitted successfully",
-        "Your data has been saved."
-      );
-      // navigate("/Q1"); // Navigate to the first question page after submission
+      // let api = "http://localhost:7000/api/riskProfile/external/Add";
+      let api = "http://192.168.3.41:7000/api/riskProfile/external/Add";
+
+      let obj = { ...values };
+      obj.token =
+        localStorage.getItem("ref") ||
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRGSyI6IjY4OGNhYjNkNTYyYmE5MjFhNTFmYTAwMiIsImFkdmlzZXJJRCI6IjY4ODcyODdlMTg5NzU4ZmE0MjlhMTVlNSIsImlhdCI6MTc1NjExNzE4NSwiZXhwIjoxNzU3NDEzMTg1fQ.a2sbbYQCmZPj0ig79ZD-YjJh8YcpHwsWXHeSHtYKaMs";
+
+      console.log("Submitting to API:", api, obj);
+
+      let res = await PostAxios(api, obj);
+      console.log("API response:", res);
+
+      if (res) {
+        // For example, you might send the values to an API or process them in some way
+        openNotification(
+          "success",
+          "topRight",
+          "Form submitted successfully",
+          "Your data has been saved."
+        );
+        navigate("/thankyou");
+      }
+      // Navigate to the first question page after submission
     } catch (error) {
       console.error("Error during form submission:", error);
-      openNotification("error", "Form submission failed", error.message);
+      openNotification(
+        "error",
+        "topRight",
+        "Form submission failed",
+        error.message
+      );
+    } finally {
+      setLoadingState(false);
     }
   };
 
@@ -152,6 +177,8 @@ const Starter = () => {
                 })}
               />
             ))}
+
+            <Route path={"/thankyou"} element={<ThankYou />} />
             {/* Add more routes as needed */}
           </Routes>
         </Form>
