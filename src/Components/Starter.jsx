@@ -63,12 +63,11 @@ const Starter = () => {
     try {
       // Handle form submission logic here
       // let api = "http://localhost:7000/api/riskProfile/external/Add";
-      let api = "http://192.168.3.41:7000/api/riskProfile/external/Add";
+      // let api = "http://192.168.3.41:7000/api/riskProfile/external/Add";
+      let api = "https://as.denarowealth.com.au/api/riskProfile/external/Add";
 
       let obj = { ...values };
-      obj.token =
-        localStorage.getItem("ref") ||
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRGSyI6IjY4OGNhYjNkNTYyYmE5MjFhNTFmYTAwMiIsImFkdmlzZXJJRCI6IjY4ODcyODdlMTg5NzU4ZmE0MjlhMTVlNSIsImlhdCI6MTc1NjExNzE4NSwiZXhwIjoxNzU3NDEzMTg1fQ.a2sbbYQCmZPj0ig79ZD-YjJh8YcpHwsWXHeSHtYKaMs";
+      obj.token = localStorage.getItem("ref") || "";
 
       console.log("Submitting to API:", api, obj);
 
@@ -121,6 +120,8 @@ const Starter = () => {
     }
   };
 
+
+
   return (
     <Formik
       initialValues={initialValues}
@@ -159,6 +160,7 @@ const Starter = () => {
           <Routes>
             {Pages.map((page, index) => (
               <Route
+                key={index + page.route} // ✅ use route as unique key
                 path={page.route}
                 element={React.cloneElement(page.element, {
                   resetForm,
@@ -172,7 +174,6 @@ const Starter = () => {
                   setFieldTouched,
                   goToNextPage,
                   goToBackPage,
-                  key: page.key,
                   ...page,
                 })}
               />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-bootstrap";
 
 import parse from "html-react-parser";
@@ -8,7 +8,13 @@ import PartnerPic from "../../assets/SVG/couple-2.svg";
 import TopStepsBar from "../TopStepsBar";
 import CButton from "../../assets/Custom/CButton";
 import { Grid } from "antd";
+import { useLocation } from "react-router-dom";
+
 const RiskQuestions = (props) => {
+  const location = useLocation();
+
+  const [isLastPage, setIsLastPage] = useState(); // safer than props.route
+
   const { setFieldValue, values, handleChange } = props;
   const { question, inputName, imgUrl } = props;
   const { goToNextPage, goToBackPage } = props;
@@ -27,6 +33,10 @@ const RiskQuestions = (props) => {
       setFieldValue(`${type}.${inputName}`, index);
     }
   };
+
+  useEffect(() => {
+    setIsLastPage(location.pathname === "/Q8");
+  }, [location.pathname]);
 
   return (
     <>
@@ -118,24 +128,15 @@ const RiskQuestions = (props) => {
             onClick={goToBackPage} // Formik's handleSubmit
             className=" mt-3 customBtn"
           />
-          {props.route === "/Q8" ? (
-            <CButton
-              text="Submit"
-              size="large"
-              type="primary" // AntD style
-              htmlType="submit" // HTML form submission behavior
-              className="p-3 mt-3  customBtn"
-            />
-          ) : (
-            <CButton
-              text="Next"
-              size="large"
-              type="primary" // AntD style
-              htmlType="button" // HTML form submission behavior
-              className="p-3 mt-3  customBtn"
-              onClick={goToNextPage} // Formik's handleSubmit
-            />
-          )}
+
+          <CButton
+            text={isLastPage ? "Submit" : "Next"}
+            size="large"
+            type="primary" // AntD style
+            htmlType={isLastPage ? "submit" : "button"}
+            className="p-3 mt-3 customBtn"
+            onClick={goToNextPage} // Formik's handleSubmit
+          />
         </div>
       </div>
     </>
