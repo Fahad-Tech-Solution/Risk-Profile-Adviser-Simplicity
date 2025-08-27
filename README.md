@@ -1,39 +1,37 @@
-# Adviser Assess Frontend
+# Risk Profile Frontend
 
-This project is a React-based web application built with Vite, designed for adviser assessment workflows.  
-It provides a modern, fast, and user-friendly interface for collecting, managing, and reporting client information.
+This project is a React-based web application built with Vite, designed to streamline the risk profiling process for advisers and clients.  
+It offers a fast, modern, and intuitive interface for collecting, managing, and reporting risk profile information.
 
 ## Project Screenshot
 
-![Adviser Assess Frontend Screenshot](./public/image.png)
-
-_Above: Example interface of the Adviser Assess Frontend application._
+![Risk Profile Frontend Screenshot](./public/image.png)
 
 ## Features
 
-- **Dynamic Question Sets:** Interactive forms for health, medical, income, and other personal information.
-- **Conditional Rendering:** Fields and sections appear based on user responses.
-- **Multi-select Inputs:** Easily select multiple options for structured data.
-- **Custom Components:** Includes reusable components for inputs, cards, and dynamic blocks.
-- **Ant Design Integration:** Uses Ant Design for modals, notifications, and UI consistency.
-- **Formik Integration:** Robust form state management and validation.
-- **Real-time Formatting:** Automatic formatting for currency and numeric fields.
-- **Report Generation:** System generates assessment reports based on user input.
-- **Email Reports:** Automatically sends generated reports to specified email addresses.
-- **Responsive Design:** Optimized for desktop and mobile devices.
-- **ESLint & Code Quality:** Enforced coding standards and best practices.
+- **Dynamic Questionnaires:** Interactive forms for risk assessment, including client and partner profiles.
+- **Conditional Logic:** Fields and sections adapt based on user responses.
+- **Multi-step Navigation:** Guided step-by-step process for completing the risk profile.
+- **Reusable Components:** Modular components for inputs, cards, and dynamic blocks.
+- **Ant Design Integration:** Consistent UI with modals, notifications, and form elements.
+- **Formik & Yup:** Robust form state management and validation.
+- **Real-time Formatting:** Automatic formatting for numeric and currency fields.
+- **Report Generation:** Generates risk profile reports based on user input.
+- **Email Integration:** Option to send reports via email.
+- **Responsive Design:** Optimized for both desktop and mobile devices.
+- **Code Quality:** Enforced standards with ESLint and best practices.
 - **Fast Refresh:** Instant updates during development with Vite HMR.
 
 ## Tools & Technologies
 
-- **React** (with hooks)
-- **Vite** (for fast development and build)
+- **React** (hooks-based)
+- **Vite** (fast development/build)
 - **Ant Design** (UI library)
 - **Formik** (form management)
 - **Yup** (validation)
 - **ESLint** (linting)
 - **React Icons** (icon library)
-- **Custom Components** (for modularity and reusability)
+- **Custom Components** (for modularity)
 
 ## Getting Started
 
@@ -52,10 +50,10 @@ _Above: Example interface of the Adviser Assess Frontend application._
 
 ## Functionality Overview
 
-- Users fill out dynamic forms for various assessment categories.
+- Users complete a multi-step risk profile form.
 - The system validates and formats input data in real time.
-- Upon completion, a report is generated and sent via email.
-- Admins and advisers can review submitted data and reports.
+- Upon completion, a risk profile report is generated and can be sent via email.
+- Advisers can review submitted profiles and reports.
 
 ## License
 
