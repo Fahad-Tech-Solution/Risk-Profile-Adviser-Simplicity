@@ -88,6 +88,11 @@ const TopStepsBar = (props) => {
       (page) => page.route === `${currentPath}`
     );
 
+    const progressPercent =
+      currentIndex !== -1 ? ((currentIndex + 1) / Pages.length) * 100 : 0;
+
+    setCurrentStepComplete(progressPercent);
+
     const iconMap = {
       FaBriefcase,
       FaCheck,
