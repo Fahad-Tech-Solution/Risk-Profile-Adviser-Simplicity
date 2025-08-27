@@ -62,9 +62,9 @@ const Starter = () => {
     setLoadingState(true);
     try {
       // Handle form submission logic here
-      let api = "http://localhost:7000/api/riskProfile/external/Add";
+      // let api = "http://localhost:7000/api/riskProfile/external/Add";
       // let api = "http://192.168.3.41:7000/api/riskProfile/external/Add";
-      // let api = "https://as.denarowealth.com.au/api/riskProfile/external/Add";
+      let api = "https://as.denarowealth.com.au/api/riskProfile/external/Add";
 
       let obj = { ...values };
       obj.token = localStorage.getItem("ref") || "";

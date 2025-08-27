@@ -148,10 +148,7 @@ const TopStepsBar = (props) => {
       const IconComponent = iconMap[item.icon] || FaUser; // Default to FaUser if not found
 
       const fullRoute = `${currentPath}`;
-      const isCurrentStep = fullRoute === item.route;
-
       let status;
-
       const globalIndex = index; // Map the local index to the global index
 
       if (globalIndex < currentIndex) {
