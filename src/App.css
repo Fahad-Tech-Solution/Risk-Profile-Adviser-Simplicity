@@ -154,6 +154,10 @@
   width: 15%;
 }
 
+.text-green {
+  color: #36b446;
+}
+
 @media only screen and (max-width: 761px) {
   .Head1 {
     font-size: 21px !important;
