@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import DynamicYesNo from "../../assets/Custom/DynamicYesNo/DynamicYesNo";
 import { Container, Image } from "react-bootstrap";
 import CButton from "../../assets/Custom/CButton";
+import { Button, Radio } from "antd";
 
 const LandingPage = (props) => {
   const {
@@ -19,74 +20,299 @@ const LandingPage = (props) => {
     goToBackPage,
     imgUrl,
   } = props;
+
+  const [joinedProfile, setJoinedProfile] = useState("No");
+  const [showPartner, setShowPartner] = useState("No");
+
   return (
-    <Container className="my-5">
-      <h3
-        className="text-center text-green "
-        onClick={() => {
-          console.log(JSON.stringify(values));
-        }}
-      >
-        <b>RISK PROFILE QUESTIONNAIRE</b>
-      </h3>
-
-      <div className="d-flex justify-content-center">
-        <Image src={imgUrl} fluid />
-      </div>
-
-      <h5 className="text-center">RISK PROFILER: YOUR ATTITUDE TO INVESTING</h5>
-      <p className="text-center">
-        The Risk Profiler is a tool that can assist you in determining your
-        tolerance to risk and how that relates to particular investments. Your
-        risk profile is not the only information you should take into account
-        before making an investment decision. These tools do not take into
-        account your individual investment objectives, financial situation or
-        particular needs.
-      </p>
-      <p className="text-center">
-        Because of this, before making any investment decision you should
-        consider whether the funds matched to your risk profile are appropriate
-        in light of your individual investment objectives, financial
-        circumstances and needs. This may include your need to access funds, any
-        pre-existing financial commitments you may have and what other financial
-        assets that you own.
-      </p>
-      <p className="text-center">
-        This Risk Profiler questionnaire poses a series of questions and assigns
-        a weighting (score) against your responses. Your overall score will
-        reflect your approximate Risk profile based on certain industry
-        standards
-      </p>
-
-      {/* question  */}
-      <div className="mb-3">
-        <label className="form-label w-100 text-center">
+    <div style={{ paddingTop: 56 }}>
+      <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto" }}>
+        <h2
+          onClick={() =>
+            console.log(
+              "values",
+              values,
+              "showPartner",
+              showPartner,
+              "joinedProfile",
+              joinedProfile,
+            )
+          }
+          style={{
+            marginBottom: 28,
+            fontFamily: "Arial, sans-serif",
+            fontSize: 26,
+            fontWeight: 900,
+            letterSpacing: 2,
+          }}
+        >
+          <strong>RISK PROFILE QUESTIONNAIRE</strong>
+        </h2>
+        <div style={{ fontSize: 52, marginBottom: 28 }}>
+          <svg
+            width="180"
+            height="130"
+            viewBox="0 0 180 130"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="87"
+              y="30"
+              width="6"
+              height="80"
+              fill="#1e3a5f"
+              rx="2"
+            ></rect>
+            <rect
+              x="60"
+              y="108"
+              width="60"
+              height="10"
+              fill="#1e3a5f"
+              rx="3"
+            ></rect>
+            <rect
+              x="75"
+              y="100"
+              width="30"
+              height="10"
+              fill="#1e3a5f"
+              rx="2"
+            ></rect>
+            <rect
+              x="20"
+              y="33"
+              width="140"
+              height="5"
+              fill="#1e3a5f"
+              rx="2"
+            ></rect>
+            <circle
+              cx="90"
+              cy="30"
+              r="6"
+              fill="#6b7280"
+              stroke="#fff"
+              stroke-width="1.5"
+            ></circle>
+            <line
+              x1="30"
+              y1="35"
+              x2="38"
+              y2="68"
+              stroke="#6b7280"
+              stroke-width="1.5"
+              stroke-dasharray="3 2"
+            ></line>
+            <line
+              x1="38"
+              y1="35"
+              x2="30"
+              y2="68"
+              stroke="#6b7280"
+              stroke-width="1.5"
+              stroke-dasharray="3 2"
+            ></line>
+            <line
+              x1="142"
+              y1="35"
+              x2="150"
+              y2="62"
+              stroke="#6b7280"
+              stroke-width="1.5"
+              stroke-dasharray="3 2"
+            ></line>
+            <line
+              x1="150"
+              y1="35"
+              x2="142"
+              y2="62"
+              stroke="#6b7280"
+              stroke-width="1.5"
+              stroke-dasharray="3 2"
+            ></line>
+            <ellipse cx="34" cy="72" rx="28" ry="8" fill="#22c55e"></ellipse>
+            <rect
+              x="8"
+              y="64"
+              width="52"
+              height="16"
+              rx="4"
+              fill="#22c55e"
+            ></rect>
+            <text
+              x="34"
+              y="76"
+              text-anchor="middle"
+              fill="white"
+              font-size="11"
+              font-weight="900"
+              font-family="Arial"
+              letter-spacing="1"
+            >
+              RISK
+            </text>
+            <ellipse cx="146" cy="64" rx="28" ry="8" fill="#ef4444"></ellipse>
+            <rect
+              x="120"
+              y="56"
+              width="52"
+              height="16"
+              rx="4"
+              fill="#ef4444"
+            ></rect>
+            <text
+              x="146"
+              y="68"
+              text-anchor="middle"
+              fill="white"
+              font-size="10"
+              font-weight="900"
+              font-family="Arial"
+              letter-spacing="0.5"
+            >
+              REWARD
+            </text>
+          </svg>
+        </div>
+        <div
+          style={{
+            marginBottom: 18,
+            fontWeight: 700,
+            fontSize: "14px",
+            fontFamily: "Arial, sans-serif",
+            letterSpacing: "1.5px",
+          }}
+        >
+          RISK PROFILER: YOUR ATTITUDE TO INVESTING
+        </div>
+        <p
+          style={{
+            // color: "#6b7280",
+            marginBottom: 28,
+            fontSize: "12.5px",
+            color: "rgb(55, 65, 81)",
+            fontFamily: "Arial, sans-serif",
+            lineHeight: "1.75",
+            margin: "0px auto 14px",
+            maxWidth: "700px",
+          }}
+        >
+          A Risk Profiler is a tool that can assist you in determining your
+          tolerance to risk and how that relates to particular investments. Your
+          risk profile is not the only information you should take into account
+          before making an investment decision. These tools do not take into
+          account your individual investment objectives, financial situation or
+          particular needs.
+          <br />
+          <br />
+          Because of this, before making any investment decision you should
+          consider whether the funds matched to your risk profile are
+          appropriate in light of your individual investment objectives,
+          financial circumstances and needs. This may include your need to
+          access funds, any pre-existing financial commitments you may have and
+          what other financial assets that you own.
+          <br />
+          <br />
+          This Risk Profiler questionnaire poses a series of questions and
+          assigns a weighting (score) against your responses. Your overall score
+          will reflect your approximate Risk profile based on certain industry
+          standards.
+        </p>
+        <div
+          style={{
+            color: "#6b7280",
+            marginBottom: 12,
+            fontSize: "12.5px",
+            color: "rgb(55, 65, 81)",
+            fontFamily: "Arial, sans-serif",
+            lineHeight: "1.75",
+            margin: "0px auto 14px",
+            maxWidth: "700px",
+          }}
+        >
           Would you like to answer this questionnaire individually or as a
           couple?
-        </label>
-        {/* switch button style */}
-        <div className="d-flex justify-content-center mt-3">
-          <div className="w-25">
-            <DynamicYesNo
-              name={`joinedProfile`}
-              values={values}
-              handleChange={handleChange}
-            />
-          </div>
         </div>
+        <Radio.Group
+          value={values.joinedProfile}
+          onChange={(event) =>
+            setFieldValue("joinedProfile", event.target.value)
+          }
+          optionType="button"
+          buttonStyle="solid"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Radio.Button
+            value="No"
+            disabled={!showPartner}
+            style={{
+              border: "1px solid #22C55E",
+              color:
+                values.joinedProfile === "No" ? "#ffffff" : "rgb(23 163 74)",
+              width: "180px",
+              height: "40px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "14px",
+              fontWeight: "700",
+              fontFamily: "Arial",
+            }}
+          >
+            No
+          </Radio.Button>
+          <Radio.Button
+            value="Yes"
+            style={{
+              border: "1px solid #22C55E",
+              color:
+                values.joinedProfile === "Yes" ? "#ffffff" : "rgb(23 163 74)",
+              width: "180px",
+              height: "40px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "14px",
+              fontWeight: "700",
+              fontFamily: "Arial",
+            }}
+          >
+            Yes
+          </Radio.Button>
+        </Radio.Group>
       </div>
-
-      <div className="d-flex justify-content-center mt-4">
-        <CButton
-          text="Start"
-          type="primary" // AntD style
-          htmlType="button" // HTML form submission behavior
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: 12,
+          alignItems: "center",
+        }}
+      >
+        <Button
+          type="primary"
           size="large"
-          style={{ width: "35%" }}
-          onClick={goToNextPage} // Formik's handleSubmit
-        />
+          style={{
+            marginTop: 0,
+            width: "360px",
+            fontSize: "14px",
+            fontWeight: "700",
+            fontFamily: "Arial",
+            borderRadius: "8px",
+            padding: "12px 24px",
+            boxShadow: " rgba(34, 197, 94, 0.3) 0px 2px 8px",
+          }}
+          onClick={goToNextPage}
+        >
+          Submit
+        </Button>
       </div>
-    </Container>
+    </div>
   );
 };
 

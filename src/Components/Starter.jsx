@@ -4,10 +4,10 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import "jspdf-autotable";
 
-import { notification, Spin } from "antd";
+import { message, notification, Spin } from "antd";
 import LandingPage from "./LandingPage/LandingPage";
 import CompRoutes from "../routes";
-import { openNotification, PostAxios } from "../assets/Api/Api";
+import { GetAxios, openNotification, PostAxios } from "../assets/Api/Api";
 import ThankYou from "./ThankYou";
 
 const Starter = () => {
@@ -29,6 +29,32 @@ const Starter = () => {
     }
     setLoadingState(false);
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      // let api = "http://localhost:7000/api/riskProfile/external/Get";
+      let api = "http://192.168.18.128:7000/api/riskProfile/external/Get";
+      let res = await GetAxios(api, {
+        token: localStorage.getItem("ref") || "",
+      });
+
+      if (res) {
+        console.log("Fetched data:", res);
+        // Handle the fetched data as needed
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      message.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Some thing went wrrong please try Later",
+      );
+    }
+  };
 
   const initialValues = {
     // Define your initial form values here
@@ -63,8 +89,8 @@ const Starter = () => {
     try {
       // Handle form submission logic here
       // let api = "http://localhost:7000/api/riskProfile/external/Add";
-      // let api = "http://192.168.3.41:7000/api/riskProfile/external/Add";
-      let api = "https://as.denarowealth.com.au/api/riskProfile/external/Add";
+      let api = "http://192.168.18.128:7000/api/riskProfile/external/Add";
+      // let api = "https://as.denarowealth.com.au/api/riskProfile/external/Add";
 
       let obj = { ...values };
       obj.token = localStorage.getItem("ref") || "";
@@ -80,7 +106,7 @@ const Starter = () => {
           "success",
           "topRight",
           "Form submitted successfully",
-          "Your data has been saved."
+          "Your data has been saved.",
         );
         navigate("/thankyou");
       }
@@ -93,7 +119,7 @@ const Starter = () => {
         "Form submission failed",
         error?.response?.data?.message ||
           error?.message ||
-          "Some thing went wrrong please try Later"
+          "Some thing went wrrong please try Later",
       );
     } finally {
       setLoadingState(false);
@@ -104,7 +130,7 @@ const Starter = () => {
 
   const goToNextPage = () => {
     const currentIndex = Pages.findIndex(
-      (page) => page.route === location.pathname
+      (page) => page.route === location.pathname,
     );
     if (currentIndex !== -1 && currentIndex < Pages.length - 1) {
       const nextRoute = Pages[currentIndex + 1].route;
@@ -114,7 +140,7 @@ const Starter = () => {
 
   const goToBackPage = () => {
     const currentIndex = Pages.findIndex(
-      (page) => page.route === location.pathname
+      (page) => page.route === location.pathname,
     );
     if (currentIndex > 0) {
       const prevRoute = Pages[currentIndex - 1].route;

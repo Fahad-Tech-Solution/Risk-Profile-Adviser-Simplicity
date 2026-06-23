@@ -1,291 +1,222 @@
 import React, { useEffect, useState } from "react";
-import { ConfigProvider, Steps } from "antd";
-import {
-  FaBriefcase,
-  FaCheck,
-  FaGift,
-  FaKey,
-  FaMoneyCheckDollar,
-  FaUser,
-  FaPlus,
-  FaChartLine,
-  FaTriangleExclamation,
-  FaGraduationCap,
-  FaChartPie,
-  FaMoneyBillWave,
-  FaBuilding,
-  FaUserTie,
-  FaHeartPulse,
-  FaRibbon,
-  FaSyringe,
-  FaBone,
-  FaWineBottle,
-  FaClipboardCheck,
-  FaFileSignature,
-  FaFileContract,
-  FaClipboardList,
-} from "react-icons/fa6";
-import {
-  MdFamilyRestroom,
-  MdWaterDrop,
-  MdOutlineBalance,
-  MdOutlineTimeline,
-  MdOutlineHomeWork,
-  MdMonitorHeart,
-  MdHealthAndSafety,
-  MdOutlineHealthAndSafety,
-} from "react-icons/md";
-import {
-  RiCoinsFill,
-  RiDiscountPercentFill,
-  RiStethoscopeLine,
-} from "react-icons/ri";
-
+import { message } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
-import { IoBriefcase, IoBriefcaseOutline } from "react-icons/io5";
-import { AiOutlineDollarCircle } from "react-icons/ai";
-import { BsClockHistory } from "react-icons/bs";
 import { handleTouchFields, openNotification } from "../assets/Api/Api";
-import { PiBrain } from "react-icons/pi";
-import {
-  GiFamilyHouse,
-  GiKidneys,
-  GiKneeCap,
-  GiMeal,
-  GiParachute,
-} from "react-icons/gi";
-import { FaHeartbeat, FaProcedures } from "react-icons/fa";
 import ProgressBar from "../assets/Custom/ProgressBar/ProgressBar";
-import { Grid } from "antd";
 import CompRoutes from "../routes";
 
-const TopStepsBar = (props) => {
-  let {
-    setFieldValue,
-    handleBlur,
-    values,
-    validateForm,
-    validateField,
-    setFieldTouched,
-    handleChange,
-  } = props.FormickOBj;
-  const sidebarWidth = props.collapsed ? "80px" : "250px"; // Adjust as needed
+const PRIMARY_GREEN = "#22c55e";
+const MUTED = "#9ca3af";
+const LINE = "#e5e7eb";
+const WARNING = "rgb(245, 158, 11)";
+const WARNING_BG = "rgb(255, 247, 213)";
 
-  const [items, setItems] = useState([]);
-  const [currentStepComplete, setCurrentStepComplete] = useState(5);
+const TopStepsBar = ({
+  FormickOBj = {},
+  lockedStepKeys = [],
+  conflicts = [],
+}) => {
+  const { values, validateForm, setFieldTouched } = FormickOBj;
   const { Pages } = CompRoutes;
 
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { md } = Grid.useBreakpoint();
-  const isMobile = md;
+  const [stepData, setStepData] = useState([]);
+  const [currentStepComplete, setCurrentStepComplete] = useState(0);
 
   useEffect(() => {
     const currentPath = location.pathname;
-
-    const currentIndex = Pages.findIndex(
-      (page) => page.route === `${currentPath}`
-    );
+    const steps = Pages.filter((page) => page.route && page.route !== "/");
+    const activeIndex = steps.findIndex((step) => step.route === currentPath);
 
     const progressPercent =
-      currentIndex !== -1 ? ((currentIndex + 1) / Pages.length) * 100 : 0;
+      activeIndex >= 0 ? ((activeIndex + 1) / steps.length) * 100 : 0;
 
     setCurrentStepComplete(progressPercent);
+    setStepData(steps);
+  }, [location.pathname, Pages]);
 
-    const iconMap = {
-      FaBriefcase,
-      FaCheck,
-      FaGift,
-      FaKey,
-      FaMoneyCheckDollar,
-      FaUser,
-      // FaHome,
-      // FaQuestionCircle,
-      MdFamilyRestroom,
-      RiCoinsFill,
-      FaPlus,
-      FaChartLine,
-      MdWaterDrop,
-      FaTriangleExclamation,
-      RiDiscountPercentFill,
-      MdHealthAndSafety,
-      MdOutlineBalance,
-      FaGraduationCap,
-      FaChartPie,
-      MdOutlineTimeline,
-      FaMoneyBillWave,
-      MdOutlineHomeWork,
-      IoBriefcaseOutline,
-      IoBriefcase,
-      AiOutlineDollarCircle,
-      FaBuilding,
-      BsClockHistory,
-      FaUserTie,
-      FaHeartPulse,
-      RiStethoscopeLine,
-      MdMonitorHeart,
-      FaRibbon,
-      FaSyringe,
-      PiBrain,
-      FaBone,
-      GiKidneys,
-      GiKneeCap,
-      FaHeartbeat,
-      FaProcedures,
-      GiParachute,
-      GiMeal,
-      FaWineBottle,
-      FaClipboardCheck,
-      MdOutlineHealthAndSafety,
-      GiFamilyHouse,
-      FaFileSignature,
-      FaFileContract,
-      FaClipboardList,
-    };
-
-    let updatedItems = Pages.map((item, index) => {
-      const IconComponent = iconMap[item.icon] || FaUser; // Default to FaUser if not found
-
-      const fullRoute = `${currentPath}`;
-      let status;
-      const globalIndex = index; // Map the local index to the global index
-
-      if (globalIndex < currentIndex) {
-        // Previous pages have been completed
-        status = "finish";
-      } else if (globalIndex === currentIndex) {
-        // The current page is in progress
-        status = "process";
-      } else {
-        // Future pages are yet to be completed
-        status = "wait";
-      }
-
-      return {
-        ...item,
-        icon: (
-          <span
-            className={`rounded-circle text-light ${
-              status == "finish"
-                ? "bgColorIncomeGreen"
-                : status == "process"
-                ? "bgColorIncomeBlack"
-                : "bgColorIncome2"
-            }`}
-            role="button"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "16px", // Adjust icon size here
-              width: "2rem", // Adjust icon container size here
-              height: "2rem", // Adjust icon container height here
-            }}
-            onClick={async () => {
-              if (currentPath === "PersonalDetails") {
-                const touch = await setFieldTouched("EmailAddress");
-                if (!touch.EmailAddress) {
-                  handleStepClick(`${item.route}`);
-                } else {
-                  openNotification(
-                    "error",
-                    "topRight",
-                    "Warning Notification",
-                    "Please! enter email before proceeding"
-                  );
-                }
-              } else {
-                let handleTouchFieldsResult = await handleTouchFields(
-                  location,
-                  setFieldTouched,
-                  values,
-                  validateForm
-                );
-
-                if (!handleTouchFieldsResult) return false;
-
-                handleStepClick(`${item.route}`);
-              }
-            }}
-          >
-            <IconComponent />
-          </span>
-        ),
-        status: status,
-        subTitle: (
-          <span
-            style={{
-              color:
-                status == "finish"
-                  ? "#36b446"
-                  : status == "process"
-                  ? "#000"
-                  : "#808080",
-              fontSize: "12px",
-              width: "100%",
-              fontWeight:
-                status == "finish" || status == "process" ? "700" : "500",
-            }}
-          >
-            {item.Title}
-          </span>
-        ),
-      };
-    });
-
-    // ✅ Only show 3 steps at a time on mobile
-    if (!isMobile) {
-      const groupSize = 3; // how many steps per window
-      const groupIndex = Math.floor(currentIndex / groupSize); // which group user is in
-
-      const start = groupIndex * groupSize;
-      const end = Math.min(start + groupSize, updatedItems.length);
-
-      updatedItems = updatedItems.slice(start, end);
+  const handleStepClick = async (route) => {
+    if (route === "/cards" && conflicts.length > 0) {
+      message.warning(
+        "Please review the inconsistencies before proceeding to the results step.",
+      );
+      return;
     }
 
-    setItems(updatedItems);
-  }, [location, Pages, values, isMobile]);
+    const currentPath = location.pathname;
+    if (currentPath === "/PersonalDetails") {
+      await setFieldTouched?.("EmailAddress", true, false);
+      navigate(route);
+      return;
+    }
 
-  const handleStepClick = (path) => {
-    navigate(path);
+    const handleTouchFieldsResult = await handleTouchFields(
+      location,
+      setFieldTouched,
+      values,
+      validateForm,
+    );
+
+    if (!handleTouchFieldsResult) return;
+
+    navigate(route);
   };
 
+  const activeIndex = stepData.findIndex(
+    (step) => step.route === location.pathname,
+  );
+
   return (
-    <>
-      <div className="pt-4 px-2 d-flex justify-content-center align-items-center overflow-auto ">
-        <div style={{ width: !isMobile ? "100%" : "85%" }}>
-          <ConfigProvider
-            theme={{
-              components: {
-                Steps: {
-                  customIconFontSize: 30,
-                },
-              },
-              token: {
-                colorPrimary: "#36b446",
-                fontSize: 12,
-                lineWidth: 4,
-              },
-            }}
-          >
-            <Steps
-              items={items}
-              labelPlacement="vertical"
-              initial={0}
-              responsive={false}
-              status="process"
-            />
-          </ConfigProvider>
+    <div className="d-flex justify-content-center align-items-center">
+      <div
+        style={{
+          position: "relative",
+          marginBottom: 28,
+          paddingTop: 8,
+          width: "70%",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            left: "2%",
+            right: "2%",
+            top: 30,
+            height: 2,
+            background: LINE,
+            zIndex: 0,
+          }}
+        />
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            position: "relative",
+            zIndex: 1,
+            gap: 2,
+            overflowX: "auto",
+            paddingBottom: 4,
+            paddingInline: 20,
+          }}
+        >
+          {stepData.map((step, index) => {
+            const active = index === activeIndex;
+            const completed = index < activeIndex;
+            const warningActive =
+              lockedStepKeys.includes(step.route) && activeIndex > index;
+            const icon = step.icon || (completed ? "✔️" : index + 1);
+            const label = step.Title ?? step.route;
+
+            return (
+              <div
+                key={step.route}
+                role="button"
+                onClick={() => handleStepClick(step.route)}
+                style={{
+                  flex: "1 1 56px",
+                  minWidth: 52,
+                  maxWidth: 120,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  background: "none",
+                  border: "none",
+                  padding: "5px 2px",
+                  cursor: "pointer",
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
+                    background: warningActive
+                      ? WARNING_BG
+                      : active || completed
+                        ? PRIMARY_GREEN
+                        : "#fff",
+                    border: warningActive
+                      ? `2px solid ${WARNING}`
+                      : active || completed
+                        ? `2px solid ${PRIMARY_GREEN}`
+                        : `2px solid ${LINE}`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 13,
+                    lineHeight: 1,
+                    boxShadow: warningActive
+                      ? "0 0 0 4px rgba(245, 159, 11, 0.35)"
+                      : active
+                        ? "0 0 0 4px rgba(34, 197, 94, .15)"
+                        : "none",
+                    color: warningActive ? WARNING : undefined,
+                  }}
+                >
+                  <span>{icon}</span>
+                  {warningActive ? (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: -4,
+                        right: -4,
+                        width: 14,
+                        height: 14,
+                        borderRadius: "50%",
+                        background: "red",
+                        color: "#fff",
+                        fontSize: 8,
+                        fontWeight: 800,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 0 0 2px #fff",
+                        fontFamily: "Georgia, serif",
+                      }}
+                    >
+                      !
+                    </span>
+                  ) : null}
+                </div>
+                <span
+                  style={{
+                    marginTop: 8,
+                    fontSize: 9,
+                    lineHeight: 1.2,
+                    textAlign: "center",
+                    color: warningActive
+                      ? WARNING
+                      : active
+                        ? PRIMARY_GREEN
+                        : completed
+                          ? "rgb(55, 65, 81)"
+                          : MUTED,
+                    fontWeight:
+                      warningActive || active || completed ? 700 : 400,
+                    display: "block",
+                    padding: "0 23px",
+                    fontFamily: "Arial, sans-serif",
+                  }}
+                >
+                  {label}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
-      <div className="pt-4 px-3 d-flex justify-content-center align-items-center overflow-auto ">
+
+      {/* <div className="pt-4 px-3 d-flex justify-content-center align-items-center overflow-auto ">
         <div className="w-100 px-4 mb-3">
           <ProgressBar progress={currentStepComplete} />
         </div>
-      </div>
-    </>
+      </div> */}
+    </div>
   );
 };
 
