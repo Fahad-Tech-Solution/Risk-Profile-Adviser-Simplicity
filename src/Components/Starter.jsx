@@ -12,6 +12,7 @@ import ThankYou from "./ThankYou";
 
 const Starter = () => {
   const [loadingState, setLoadingState] = useState(true);
+  const [UserDetails, setUserDetails] = useState({});
 
   const navigate = useNavigate();
   const { Pages } = CompRoutes;
@@ -36,14 +37,27 @@ const Starter = () => {
 
   const fetchData = async () => {
     try {
-      // let api = "http://localhost:7000/api/riskProfile/external/Get";
-      let api = "http://192.168.18.128:7000/api/riskProfile/external/Get";
-      let res = await GetAxios(api, {
+      const cachedData = localStorage.getItem("userDetails");
+
+      if (cachedData) {
+        console.log("Loading from localStorage:", JSON.parse(cachedData));
+        setUserDetails(JSON.parse(cachedData));
+        return;
+      }
+
+      // let api =
+      //   "http://192.168.18.128:7000/api/riskProfile/external/clientDetails";
+      let api =
+        "https://as.denarowealth.com.au/api/riskProfile/external/clientDetails";
+
+      let res = await PostAxios(api, {
         token: localStorage.getItem("ref") || "",
       });
 
       if (res) {
         console.log("Fetched data:", res);
+        setUserDetails(res);
+        localStorage.setItem("userDetails", JSON.stringify(res));
         // Handle the fetched data as needed
       }
     } catch (error) {
@@ -51,7 +65,7 @@ const Starter = () => {
       message.error(
         error?.response?.data?.message ||
           error?.message ||
-          "Some thing went wrrong please try Later",
+          "Some thing went wrong please try Later",
       );
     }
   };
@@ -78,7 +92,7 @@ const Starter = () => {
       question7: 1,
       question8: 1,
     },
-    joinedProfile: "No",
+    joinedProfile: "Yes",
   };
 
   // let validationSchema = Yup.object().shape({});
@@ -89,8 +103,8 @@ const Starter = () => {
     try {
       // Handle form submission logic here
       // let api = "http://localhost:7000/api/riskProfile/external/Add";
-      let api = "http://192.168.18.128:7000/api/riskProfile/external/Add";
-      // let api = "https://as.denarowealth.com.au/api/riskProfile/external/Add";
+      // let api = "http://192.168.18.128:7000/api/riskProfile/external/Add";
+      let api = "https://as.denarowealth.com.au/api/riskProfile/external/Add";
 
       let obj = { ...values };
       obj.token = localStorage.getItem("ref") || "";
@@ -200,6 +214,7 @@ const Starter = () => {
                   setFieldTouched,
                   goToNextPage,
                   goToBackPage,
+                  UserDetails,
                   ...page,
                 })}
               />

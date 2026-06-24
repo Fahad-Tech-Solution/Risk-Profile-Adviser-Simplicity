@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import DynamicYesNo from "../../assets/Custom/DynamicYesNo/DynamicYesNo";
 import { Container, Image } from "react-bootstrap";
 import CButton from "../../assets/Custom/CButton";
-import { Button, Radio } from "antd";
+import { Button, message, Radio } from "antd";
 
 const LandingPage = (props) => {
   const {
@@ -19,6 +19,7 @@ const LandingPage = (props) => {
     goToNextPage,
     goToBackPage,
     imgUrl,
+    UserDetails,
   } = props;
 
   const [joinedProfile, setJoinedProfile] = useState("No");
@@ -237,9 +238,16 @@ const LandingPage = (props) => {
         </div>
         <Radio.Group
           value={values.joinedProfile}
-          onChange={(event) =>
-            setFieldValue("joinedProfile", event.target.value)
-          }
+          onChange={(event) => {
+            console.log("event.target.value", event.target.value);
+            if (!UserDetails?.isSingle) {
+              setFieldValue("joinedProfile", event.target.value);
+            } else {
+              message.warning(
+                "You are marked as single in our records. You cannot select 'No' for Separate profile.",
+              );
+            }
+          }}
           optionType="button"
           buttonStyle="solid"
           style={{
@@ -249,11 +257,12 @@ const LandingPage = (props) => {
         >
           <Radio.Button
             value="No"
-            disabled={!showPartner}
+            disabled={UserDetails?.isSingle}
             style={{
               border: "1px solid #22C55E",
               color:
                 values.joinedProfile === "No" ? "#ffffff" : "rgb(23 163 74)",
+              cursor: !UserDetails?.isSingle ? "not-allowed" : "pointer",
               width: "180px",
               height: "40px",
               display: "flex",

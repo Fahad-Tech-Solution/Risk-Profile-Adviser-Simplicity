@@ -14,7 +14,14 @@ const RiskQuestions = (props) => {
   const [isLastPage, setIsLastPage] = useState(false);
 
   const { setFieldValue, values, goToNextPage, goToBackPage } = props;
-  const { question, inputName, imgUrl, choices = [], icon } = props;
+  const {
+    question,
+    inputName,
+    imgUrl,
+    choices = [],
+    icon,
+    UserDetails,
+  } = props;
 
   const { md } = Grid.useBreakpoint();
   const isMobile = md;
@@ -25,8 +32,15 @@ const RiskQuestions = (props) => {
 
   const includePartner = values?.joinedProfile === "No";
   const participantCards = [
-    { key: "client", name: "Client" },
-    ...(includePartner ? [{ key: "partner", name: "Partner" }] : []),
+    { key: "client", name: UserDetails?.clientPreferredName || "Client" },
+    ...(includePartner
+      ? [
+          {
+            key: "partner",
+            name: UserDetails?.partnerPreferredName || "Partner",
+          },
+        ]
+      : []),
   ];
 
   const handleAnswerChange = (participant, stepKey, value) => {
