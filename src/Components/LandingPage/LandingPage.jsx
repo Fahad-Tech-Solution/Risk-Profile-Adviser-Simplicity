@@ -233,8 +233,7 @@ const LandingPage = (props) => {
             maxWidth: "700px",
           }}
         >
-          Would you like to answer this questionnaire individually or as a
-          couple?
+          Would you like to answer this questionnaire individually?
         </div>
         <Radio.Group
           value={values.joinedProfile}
